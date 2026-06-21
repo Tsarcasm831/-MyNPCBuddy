@@ -1,0 +1,77 @@
+plugins {
+    id 'java'
+    id 'io.github.zed-0xff.zb-gradle-plugin' version '1.0.3'
+}
+
+zbSigning {
+    jarTask = 'jar'
+}
+
+// ZVersion: dotted game version (e.g. 42, 42.12, 42.13) — drives GAME_DIR and source variant
+def ZVersion = findProperty('ZVersion')
+if (!ZVersion) throw new GradleException('ZVersion must be set (e.g. -PZVersion=42)')
+
+// Windows: override PZ_DIR on the command line if your install differs:
+//   .\gradlew.bat build -PZVersion=42 -PPZ_DIR="F:/SteamLibrary/steamapps/common/ProjectZomboid"
+def PZ_DIR = findProperty('PZ_DIR') ?: 'E:/SteamLibrary/steamapps/common/ProjectZomboid'
+def ZB_JAR = findProperty('ZB_JAR') ?: "${PZ_DIR}/ZombieBuddy.jar"
+def PZ_JAR = findProperty('PZ_JAR') ?: "${PZ_DIR}/projectzomboid.jar"
+
+// Fail early with helpful messages if jars are missing
+if (!file(PZ_JAR).exists()) {
+    throw new GradleException(
+        "Project Zomboid jar not found: ${PZ_JAR}\n" +
+        "  -> Set -PPZ_DIR=<your PZ install folder> or -PPZ_JAR=<full path to projectzomboid.jar>"
+    )
+}
+if (!file(ZB_JAR).exists()) {
+    throw new GradleException(
+        "ZombieBuddy jar not found: ${ZB_JAR}\n" +
+        "  -> Install ZombieBuddy from the Steam Workshop so it appears in your PZ folder,\n" +
+        "     or set -PZB_JAR=<full path to ZombieBuddy.jar>"
+    )
+}
+
+dependencies {
+    compileOnly files(ZB_JAR)
+    compileOnly files(PZ_JAR)
+}
+
+jar {
+    archiveBaseName.set('client')
+    archiveVersion.set('')
+    archiveClassifier.set('')
+}
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+
+// place all .java files in the 'src' directory
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+            include '**/*.java'
+        }
+    }
+}
+
+// disable JNI headers and incremental compilation
+tasks.withType(JavaCompile).configureEach {
+    options.generatedSourceOutputDirectory.set(provider { null })
+    options.headerOutputDirectory.set(provider { null })
+    options.incremental = false
+}
+
+tasks.register("cleanup") {
+    doLast {
+        delete "${buildDir}/tmp"
+        delete "${buildDir}/classes"
+    }
+}
+
+tasks.named("build") {
+    finalizedBy("cleanup")
+}

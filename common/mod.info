@@ -1,0 +1,10 @@
+name=MyNPCBuddy
+id=MyNPCBuddy
+author=LordTsarcasm
+url=
+poster=poster.png
+icon=modIcon.png
+
+ZBVersionMin=1.6.0
+javaJarFile=media/java/client/build/libs/client.jar
+javaPkgName=com.lordtsarcasm.mynpcbuddy

@@ -1,0 +1,46 @@
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+.project
+.settings
+*.iml
+*.ipr
+*.iws
+
+# Gradle
+.gradle/
+
+# Java
+*.class
+
+# Logs
+*.log
+console.txt
+
+# Temp / swap
+*.tmp
+*.swp
+*~
+
+# Build output directories
+java/build/
+42/media/java/client/build/classes/
+42/media/java/client/build/reports/
+42/media/java/client/build/tmp/
+42/media/java/client/build/*.html
+
+# Stale/template artifacts not referenced by mod.info
+42/media/java/client/ZBHelloWorld.jar
+42/media/java/client/ZBHelloWorld.jar.zbs
+java/.gitignore
+java/.workshopignore
+
+# Keep the active JAR referenced by 42/mod.info
+# (libs/ is intentionally not ignored so client.jar is tracked)
+
+# Keep the Gradle wrapper files
+!42/media/java/client/gradle/wrapper/gradle-wrapper.jar
+!42/media/java/client/gradle/wrapper/gradle-wrapper.properties
