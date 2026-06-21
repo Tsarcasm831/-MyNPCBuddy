@@ -90,7 +90,7 @@ public class BodyAPIProbe {
             out.add("=== Probe: IsoLuaMover ===");
             out.addAll(probeClass("zombie.iso.IsoLuaMover", LMOVER_METHODS));
             String result = join(out);
-            System.out.println("[ZB-Probe] " + result.replace("\n", "\n[ZB-Probe] "));
+            System.out.println("[MyNPCBuddy] " + result.replace("\n", "\n[MyNPCBuddy] "));
             return result;
         } catch (Exception e) {
             return "probeIsoLuaMover EXCEPTION: " + e.getMessage();
@@ -103,7 +103,7 @@ public class BodyAPIProbe {
             out.add("=== Probe: SurvivorFactory ===");
             out.addAll(probeClass("zombie.characters.SurvivorFactory", SURVIVOR_FACTORY_METHODS));
             String result = join(out);
-            System.out.println("[ZB-Probe] " + result.replace("\n", "\n[ZB-Probe] "));
+            System.out.println("[MyNPCBuddy] " + result.replace("\n", "\n[MyNPCBuddy] "));
             return result;
         } catch (Exception e) {
             return "probeSurvivorFactory EXCEPTION: " + e.getMessage();
@@ -116,7 +116,7 @@ public class BodyAPIProbe {
             out.add("=== Probe: IsoSurvivor ===");
             out.addAll(probeClass("zombie.characters.IsoSurvivor", ISO_SURVIVOR_METHODS));
             String result = join(out);
-            System.out.println("[ZB-Probe] " + result.replace("\n", "\n[ZB-Probe] "));
+            System.out.println("[MyNPCBuddy] " + result.replace("\n", "\n[MyNPCBuddy] "));
             return result;
         } catch (Exception e) {
             return "probeIsoSurvivor EXCEPTION: " + e.getMessage();
@@ -129,7 +129,7 @@ public class BodyAPIProbe {
             out.add("=== Probe: PathFindBehavior2 ===");
             out.addAll(probeClass("zombie.pathfind.PathFindBehavior2", PATHFIND_METHODS));
             String result = join(out);
-            System.out.println("[ZB-Probe] " + result.replace("\n", "\n[ZB-Probe] "));
+            System.out.println("[MyNPCBuddy] " + result.replace("\n", "\n[MyNPCBuddy] "));
             return result;
         } catch (Exception e) {
             return "probePathFindBehavior2 EXCEPTION: " + e.getMessage();
@@ -144,7 +144,7 @@ public class BodyAPIProbe {
             out.add("=== Probe: AdjacentFreeTileFinderFull ===");
             out.addAll(probeClass("zombie.iso.AdjacentFreeTileFinderFull", null));
             String result = join(out);
-            System.out.println("[ZB-Probe] " + result.replace("\n", "\n[ZB-Probe] "));
+            System.out.println("[MyNPCBuddy] " + result.replace("\n", "\n[MyNPCBuddy] "));
             return result;
         } catch (Exception e) {
             return "probeAdjacentFreeTileFinder EXCEPTION: " + e.getMessage();

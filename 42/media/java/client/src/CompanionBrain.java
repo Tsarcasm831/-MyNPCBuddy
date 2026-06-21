@@ -141,7 +141,7 @@ public class CompanionBrain {
             String vposStr = hasVirtualPosition
                 ? String.format("(%.1f,%.1f,%.0f)", companionX, companionY, companionZ)
                 : "none";
-            System.out.println("[ZB] Order set: STAY, holding vpos=" + vposStr);
+            System.out.println("[MyNPCBuddy] Order set: STAY, holding vpos=" + vposStr);
 
         } else if ("SCOUT".equals(order)) {
             if (!hasVirtualPosition && player != null) {
@@ -160,11 +160,11 @@ public class CompanionBrain {
             hasScoutAnchor = (hasVirtualPosition || player != null);
             scoutAngle = 0.0f;
             System.out.println(String.format(
-                "[ZB] Order set: SCOUT, anchor=(%.1f,%.1f,%.0f)",
+                "[MyNPCBuddy] Order set: SCOUT, anchor=(%.1f,%.1f,%.0f)",
                 scoutAnchorX, scoutAnchorY, scoutAnchorZ));
 
         } else if ("FOLLOW".equals(order)) {
-            System.out.println("[ZB] Order set: FOLLOW");
+            System.out.println("[MyNPCBuddy] Order set: FOLLOW");
         }
     }
 
@@ -233,7 +233,7 @@ public class CompanionBrain {
             return formatStatusLine();
 
         } catch (Exception e) {
-            System.out.println("[ZB] CompanionBrain update error: " + e.getMessage());
+            System.out.println("[MyNPCBuddy] CompanionBrain update error: " + e.getMessage());
             ExceptionLogger.logException(e);
             return "Companion ERROR: " + e.getMessage();
         }
@@ -253,7 +253,7 @@ public class CompanionBrain {
         hasScoutAnchor = false;
         scoutAngle = 0.0f;
         System.out.println(String.format(
-            "[ZB] Virtual companion position reset: x=%.1f y=%.1f z=%.0f",
+            "[MyNPCBuddy] Virtual companion position reset: x=%.1f y=%.1f z=%.0f",
             companionX, companionY, companionZ));
     }
 

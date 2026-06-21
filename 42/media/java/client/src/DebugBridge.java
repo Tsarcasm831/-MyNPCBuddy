@@ -19,15 +19,15 @@ public class DebugBridge {
         try {
             IsoPlayer player = IsoPlayer.players[0];
             if (player == null) {
-                System.out.println("MyNPCBuddy: no player found");
+                System.out.println("[MyNPCBuddy] no player found");
                 return;
             }
             float x = player.getX();
             float y = player.getY();
             float z = player.getZ();
-            System.out.println("MyNPCBuddy: player position x=" + x + " y=" + y + " z=" + z);
+            System.out.println("[MyNPCBuddy] player position x=" + x + " y=" + y + " z=" + z);
         } catch (Exception e) {
-            System.out.println("MyNPCBuddy: printPlayerPosition error - " + e.getMessage());
+            System.out.println("[MyNPCBuddy] printPlayerPosition error - " + e.getMessage());
             ExceptionLogger.logException(e);
         }
     }
@@ -36,7 +36,7 @@ public class DebugBridge {
         try {
             IsoPlayer player = IsoPlayer.players[0];
             if (player == null) {
-                System.out.println("MyNPCBuddy: no player found");
+                System.out.println("[MyNPCBuddy] no player found");
                 return;
             }
 
@@ -46,13 +46,13 @@ public class DebugBridge {
 
             IsoGridSquare playerSquare = player.getCurrentSquare();
             if (playerSquare == null) {
-                System.out.println("MyNPCBuddy: player square not found");
+                System.out.println("[MyNPCBuddy] player square not found");
                 return;
             }
 
             IsoCell cell = playerSquare.getCell();
             if (cell == null) {
-                System.out.println("MyNPCBuddy: cell not found");
+                System.out.println("[MyNPCBuddy] cell not found");
                 return;
             }
 
@@ -63,9 +63,9 @@ public class DebugBridge {
 
             ArrayList zombies = cell.getZombieList();
             if (zombies == null) {
-                System.out.println("MyNPCBuddy: no zombies nearby");
-                System.out.println("MyNPCBuddy: player position x=" + playerX + " y=" + playerY + " z=" + playerZ);
-                System.out.println("MyNPCBuddy: zombie count within radius " + radius + " = 0");
+                System.out.println("[MyNPCBuddy] no zombies nearby");
+                System.out.println("[MyNPCBuddy] player position x=" + playerX + " y=" + playerY + " z=" + playerZ);
+                System.out.println("[MyNPCBuddy] zombie count within radius " + radius + " = 0");
                 return;
             }
 
@@ -93,19 +93,19 @@ public class DebugBridge {
                 }
             }
 
-            System.out.println("MyNPCBuddy: player position x=" + playerX + " y=" + playerY + " z=" + playerZ);
-            System.out.println("MyNPCBuddy: zombie count within radius " + radius + " = " + zombieCount);
+            System.out.println("[MyNPCBuddy] player position x=" + playerX + " y=" + playerY + " z=" + playerZ);
+            System.out.println("[MyNPCBuddy] zombie count within radius " + radius + " = " + zombieCount);
 
             if (zombieCount == 0) {
-                System.out.println("MyNPCBuddy: no zombies nearby");
+                System.out.println("[MyNPCBuddy] no zombies nearby");
             } else if (closestZombie != null) {
-                System.out.println("MyNPCBuddy: closest zombie at x=" + closestZombie.getX()
+                System.out.println("[MyNPCBuddy] closest zombie at x=" + closestZombie.getX()
                     + " y=" + closestZombie.getY()
                     + " z=" + closestZombie.getZ()
                     + " distance=" + String.format("%.2f", closestDistance));
             }
         } catch (Exception e) {
-            System.out.println("MyNPCBuddy: scanAreaForZombies error - " + e.getMessage());
+            System.out.println("[MyNPCBuddy] scanAreaForZombies error - " + e.getMessage());
             ExceptionLogger.logException(e);
         }
     }
@@ -206,9 +206,18 @@ public class DebugBridge {
         String danger = CompanionBrain.luaGetDangerState();
         String action = CompanionBrain.luaGetDesiredAction();
 
+        CompanionBrain brain = CompanionBrain.getInstance();
+        int zombieCount = brain.getNearbyZombieCount();
+        String closestStr;
+        if (zombieCount == 0) {
+            closestStr = "none";
+        } else {
+            closestStr = String.format("%.1f", brain.getClosestZombieDistance());
+        }
+
         return String.format(
-            "BrainTick player=%s vpos=%s dist=%s order=%s danger=%s action=%s",
-            playerPos, virtPos, distStr, order, danger, action);
+            "BrainTick player=%s vpos=%s dist=%s order=%s danger=%s action=%s zombies=%d closest=%s",
+            playerPos, virtPos, distStr, order, danger, action, zombieCount, closestStr);
     }
 
     public static boolean companionIsEnabled() {

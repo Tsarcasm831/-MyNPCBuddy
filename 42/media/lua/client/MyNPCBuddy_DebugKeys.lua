@@ -239,7 +239,7 @@ function NPCMarkerOverlay:render()
 
     if not ok and not markerRenderErrorLogged then
         markerRenderErrorLogged = true
-        print("[ZB] Marker render error (logged once): " .. tostring(err))
+        print("[MyNPCBuddy] Marker render error (logged once): " .. tostring(err))
     end
 end
 
@@ -410,7 +410,7 @@ function MyNPCConsole:onResize()
     self:reflowRows()
 end
 
-function MyNPCConsole:addLine(text, r, g, b)
+function MyNPCConsole:addLineSilent(text, r, g, b)
     r = r or 0.85; g = g or 0.85; b = b or 0.85
     local item = {text = text, r = r, g = g, b = b}
     table.insert(self.lines, item)
@@ -429,6 +429,11 @@ function MyNPCConsole:addLine(text, r, g, b)
     end
 end
 
+function MyNPCConsole:addLine(text, r, g, b)
+    self:addLineSilent(text, r, g, b)
+    print("[MyNPCBuddy] " .. text)
+end
+
 function MyNPCConsole:onProbe()
     local ok, err = pcall(function()
         DebugBridge.printPlayerPosition()
@@ -444,7 +449,7 @@ function MyNPCConsole:onProbe()
         local x = string.format("%.1f", player:getX())
         local y = string.format("%.1f", player:getY())
         local z = string.format("%.0f", player:getZ())
-        self:addLine("pos  x=" .. x .. "  y=" .. y .. "  z=" .. z, 0.3, 1, 0.3)
+        self:addLineSilent("pos  x=" .. x .. "  y=" .. y .. "  z=" .. z, 0.3, 1, 0.3)
     end
 end
 
@@ -471,8 +476,8 @@ function MyNPCConsole:onScan()
     local x = string.format("%.1f", player:getX())
     local y = string.format("%.1f", player:getY())
     local z = string.format("%.0f", player:getZ())
-    self:addLine("Scan: player at x=" .. x .. " y=" .. y .. " z=" .. z, 0.5, 0.8, 1)
-    self:addLine("Check console.txt for full zombie scan results", 0.6, 0.6, 0.6)
+    self:addLineSilent("Scan: player at x=" .. x .. " y=" .. y .. " z=" .. z, 0.5, 0.8, 1)
+    self:addLineSilent("Check console.txt for full zombie scan results", 0.6, 0.6, 0.6)
 end
 
 function MyNPCConsole:onBrainTickToggle()
@@ -570,15 +575,15 @@ function MyNPCConsole:setOrder(order)
         local vx = string.format("%.1f", DebugBridge.companionGetVirtualX())
         local vy = string.format("%.1f", DebugBridge.companionGetVirtualY())
         local vz = string.format("%.0f", DebugBridge.companionGetVirtualZ())
-        self:addLine("Order set: STAY, holding vpos=(" .. vx .. "," .. vy .. "," .. vz .. ")", 1.0, 0.85, 0.2)
+        self:addLineSilent("Order set: STAY, holding vpos=(" .. vx .. "," .. vy .. "," .. vz .. ")", 1.0, 0.85, 0.2)
     elseif order == "SCOUT" then
         local ok2 = pcall(function() return DebugBridge.companionHasScoutAnchor() end)
         local ax = string.format("%.1f", DebugBridge.companionGetScoutAnchorX())
         local ay = string.format("%.1f", DebugBridge.companionGetScoutAnchorY())
         local az = string.format("%.0f", DebugBridge.companionGetScoutAnchorZ())
-        self:addLine("Order set: SCOUT, anchor=(" .. ax .. "," .. ay .. "," .. az .. ")", 0.8, 0.4, 1.0)
+        self:addLineSilent("Order set: SCOUT, anchor=(" .. ax .. "," .. ay .. "," .. az .. ")", 0.8, 0.4, 1.0)
     else
-        self:addLine("Order set: " .. order, 0.3, 1, 0.5)
+        self:addLineSilent("Order set: " .. order, 0.3, 1, 0.5)
     end
 
     self:updateOrderButtons()
@@ -603,7 +608,7 @@ function MyNPCConsole:onMarkerDetailToggle()
     if self.btnMarkerDetail then
         self.btnMarkerDetail:setTitle("Detail: " .. markerDetail)
     end
-    self:addLine("Marker detail: " .. markerDetail, 0.3, 0.8, 1.0)
+    self:addLineSilent("Marker detail: " .. markerDetail, 0.3, 0.8, 1.0)
 end
 
 function MyNPCConsole:onMarkerToggle()
@@ -619,7 +624,7 @@ function MyNPCConsole:onMarkerToggle()
     end
 
     self:addLine(
-        markerEnabled and "Marker ON — debug overlay active" or "Marker OFF",
+        markerEnabled and "Marker ON - debug overlay active" or "Marker OFF",
         0.3, 1.0, 0.8
     )
 end
@@ -642,7 +647,7 @@ function MyNPCConsole:onResetVirtualPos()
         local x = string.format("%.1f", DebugBridge.companionGetVirtualX())
         local y = string.format("%.1f", DebugBridge.companionGetVirtualY())
         local z = string.format("%.0f", DebugBridge.companionGetVirtualZ())
-        self:addLine("Virtual companion pos reset: x=" .. x .. " y=" .. y .. " z=" .. z, 1.0, 0.6, 0.2)
+        self:addLineSilent("Virtual companion pos reset: x=" .. x .. " y=" .. y .. " z=" .. z, 1.0, 0.6, 0.2)
     else
         self:addLine("Reset Virtual Pos: no player found", 1, 0.8, 0.2)
     end
@@ -691,11 +696,11 @@ end
 
 local function printProbeResult(console, result, label)
     if result == nil then
-        console:addLine(label .. ": nil result", 1, 0.4, 0.4)
+        console:addLineSilent(label .. ": nil result", 1, 0.4, 0.4)
         return
     end
     for line in string.gmatch(tostring(result), "[^\n]+") do
-        console:addLine(line, 0.6, 0.9, 1.0)
+        console:addLineSilent(line, 0.6, 0.9, 1.0)
     end
 end
 
@@ -808,7 +813,7 @@ local function getOrCreateConsole()
     consoleWindow = MyNPCConsole:new(sw - consoleW - 20, 60, consoleW, consoleH)
     consoleWindow:initialise()
     consoleWindow:addToUIManager()
-    consoleWindow:addLine("MyNPCBuddy console ready — press F9 or click Probe Pos", 0.5, 0.8, 1)
+    consoleWindow:addLineSilent("MyNPCBuddy console ready — press F9 or click Probe Pos", 0.5, 0.8, 1)
     return consoleWindow
 end
 
@@ -1076,7 +1081,7 @@ end
 
 local function onSaveCleanup()
     if activeTestMover ~= nil then
-        print("[ZB] OnSave: despawning active test mover before save")
+        print("[MyNPCBuddy] OnSave: despawning active test mover before save")
         despawnActiveTestMover(nil)
         if consoleWindow ~= nil and not consoleWindow.removed then
             consoleWindow:addLine("OnSave: test mover removed before save", 1, 0.8, 0.2)
@@ -1086,7 +1091,7 @@ end
 
 local function onMainMenuCleanup()
     if activeTestMover ~= nil then
-        print("[ZB] OnMainMenu: despawning active test mover")
+        print("[MyNPCBuddy] OnMainMenu: despawning active test mover")
         despawnActiveTestMover(nil)
         activeTestMover = nil
     end
